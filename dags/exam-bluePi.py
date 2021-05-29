@@ -1,5 +1,6 @@
-import airflow
 import psycopg2
+import pandas as pd
+
 from psycopg2 import Error
 
 from airflow.models import DAG
@@ -40,8 +41,7 @@ def get_data_from_db(table_name):
 
         cursor.execute(postgreSQL_select_Query)
         result_records = cursor.fetchall()
-        print(table_name)
-        save_data_to_datalake(result_records)
+        save_data_to_dl(table_name, result_records)
     except (Exception, Error) as error:
         print("Error while connecting to PostgreSQL", error)
     finally:
@@ -51,9 +51,13 @@ def get_data_from_db(table_name):
             print("PostgreSQL connection is closed")
 
 
-def save_data_to_datalake(result_records):
+def save_data_to_dl(table_name, result_records):
+    print(table_name)
     for row in result_records:
         print("Row = ", row)
+    # retail = pd.DataFrame(result_records)
+    # retail.to_csv(
+    #     f"/home/airflow/gcs/data/retail_from_db({table_name}).csv", index=False)
 
 
 default_args = {
@@ -74,4 +78,13 @@ t1 = PythonOperator(
     dag=dag,
 )
 
+# t2 = BashOperator(
+#     task_id='load_bq',
+#     bash_command='bq load --source_format=CSV --autodetect\
+#                 sample_dataset.online_retail1\
+#                 gs://australia-southeast1-worksh-21c5247f-bucket/data/result.csv',
+#     dag=dag,
+# )
 t1
+
+# t1 >> t2
