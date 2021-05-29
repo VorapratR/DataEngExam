@@ -1,5 +1,6 @@
 import airflow
 import psycopg2
+from psycopg2 import Error
 
 from airflow.models import DAG
 from airflow.models import Variable
@@ -19,27 +20,41 @@ class Config:
     POSTGRESQL_DB = Variable.get("POSTGRESQL_DB")
 
 
-def get_data_from_db():
+def control_connect_db():
+    tables = ["users", "user_log"]
 
-    # Connect to the database
-    connection = psycopg2.connect(user=Config.POSTGRESQL_USER,
-                                  password=Config.POSTGRESQL_PASSWORD,
-                                  host=Config.POSTGRESQL_HOST,
-                                  port=Config.POSTGRESQL_PORT,
-                                  database=Config.POSTGRESQL_DB)
-
-    # Create a cursor to perform database operations
-    cursor = connection.cursor()
-    # Print PostgreSQL details
-    print("PostgreSQL server information")
-    print(connection.get_dsn_parameters(), "\n")
-    return connection.get_dsn_parameters()
+    for table in tables:
+        get_data_from_db(table)
 
 
-# def display_variable():
-#     my_var = Variable.get("my_var")
-#     print('Variable: ' + my_var)
-#     return my_var
+def get_data_from_db(table_name):
+    try:
+        # Connect to an existing database
+        connection = psycopg2.connect(user=Config.POSTGRESQL_USER,
+                                      password=Config.POSTGRESQL_PASSWORD,
+                                      host=Config.POSTGRESQL_HOST,
+                                      port=Config.POSTGRESQL_PORT,
+                                      database=Config.POSTGRESQL_DB)
+        cursor = connection.cursor()
+        postgreSQL_select_Query = f"select * from {table_name}"
+
+        cursor.execute(postgreSQL_select_Query)
+        result_records = cursor.fetchall()
+        print(table_name)
+        save_data_to_datalake(result_records)
+    except (Exception, Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+    finally:
+        if (connection):
+            cursor.close()
+            connection.close()
+            print("PostgreSQL connection is closed")
+
+
+def save_data_to_datalake(result_records):
+    for row in result_records:
+        print("Row = ", row)
+
 
 default_args = {
     'owner': 'VorapratR',
@@ -54,8 +69,8 @@ dag = DAG(
 )
 
 t1 = PythonOperator(
-    task_id='get_data_from_db',
-    python_callable=get_data_from_db,
+    task_id='control_connect_db',
+    python_callable=control_connect_db,
     dag=dag,
 )
 
