@@ -78,8 +78,6 @@ COPY config/airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
 
 RUN chown -R airflow: ${AIRFLOW_USER_HOME}
 
-RUN sudo pip install PyMySQL
-
 EXPOSE 8080 5555 8793
 
 USER airflow
