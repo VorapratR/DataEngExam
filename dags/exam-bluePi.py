@@ -5,6 +5,7 @@ from psycopg2 import Error
 
 from airflow.models import DAG
 from airflow.models import Variable
+from airflow.contrib.hooks.gcs_hook import GoogleCloudStorageHook
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.bash_operator import BashOperator
 
@@ -19,10 +20,13 @@ class Config:
     POSTGRESQL_USER = Variable.get("POSTGRESQL_USER")
     POSTGRESQL_PASSWORD = Variable.get("POSTGRESQL_PASSWORD")
     POSTGRESQL_DB = Variable.get("POSTGRESQL_DB")
+    POSTGRESQL_TABLE = Variable.get("POSTGRESQL_TABLE")
+    BUCKET_NAME = Variable.get("BUCKET_NAME")
+    FOLDER_NAME = Variable.get("FOLDER_NAME")
 
 
 def control_connect_db():
-    tables = ["users", "user_log"]
+    tables = Config.POSTGRESQL_TABLE.split(',')
 
     for table in tables:
         get_data_from_db(table)
@@ -52,17 +56,30 @@ def get_data_from_db(table_name):
 
 
 def save_data_to_dl(table_name, result_records):
+    filename = f"retail_from_{table_name}_table"
+    bucket_name = Config.BUCKET_NAME
     print(table_name)
     for row in result_records:
         print("Row = ", row)
-    # retail = pd.DataFrame(result_records)
-    # retail.to_csv(
-    #     f"/home/airflow/gcs/data/retail_from_db({table_name}).csv", index=False)
+    print("---end---")
+    retail = pd.DataFrame(result_records)
+    retail.to_csv(f"{filename}.csv", index=False)
+    hook = GoogleCloudStorageHook()
+    hook.upload(bucket_name,
+                object='{}.csv'.format(filename),
+                filename=f"{filename}.csv",
+                mime_type='text/csv')
 
 
 default_args = {
     'owner': 'VorapratR',
     'start_date': days_ago(1),
+    'email': ['voraprat.r@gmail.com'],
+    'email_on_failure': False,
+    'email_on_retry': False,
+    'retries': 1,
+    'retry_delay': timedelta(minutes=60),
+    'schedule_interval': '@once',
 }
 
 dag = DAG(
