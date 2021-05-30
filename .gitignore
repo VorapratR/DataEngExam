@@ -1,0 +1,4 @@
+key-file.json
+env.json
+gcp.json
+*.pyc
