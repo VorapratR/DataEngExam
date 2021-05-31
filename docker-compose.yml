@@ -7,6 +7,7 @@ services:
             - POSTGRES_USER=airflow
             - POSTGRES_PASSWORD=airflow
             - POSTGRES_DB=airflow
+            - GOOGLE_APPLICATION_CREDENTIALS=/usr/local/airflow/dags/voraprat-bluepi-de-exam-d2b1a19a531f.json
         logging:
             options:
                 max-size: 10m
@@ -20,6 +21,7 @@ services:
         environment:
             - LOAD_EX=n
             - EXECUTOR=Local
+            - GOOGLE_APPLICATION_CREDENTIALS=/usr/local/airflow/dags/voraprat-bluepi-de-exam-d2b1a19a531f.json
         logging:
             options:
                 max-size: 10m
