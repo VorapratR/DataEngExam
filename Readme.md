@@ -22,13 +22,15 @@ docker-compose up -d
 <img width="1792" alt="Screen Shot 2564-05-31 at 21 49 10" src="https://user-images.githubusercontent.com/40566685/120215135-93115380-c25f-11eb-98e7-fc41a787d964.png">
 
 POSTGRESQL_TABLE is Name of table in PostgreSQL , There is a ',' conflict between table names.
-  **Example**
- ```
+
+**Example**
+```
 ## Table name is users and user_log
 POSTGRESQL_TABLE = "users,user_log"
 ```
-POSTGRESQL_TABLE_COLUMN_NAME is Name of column table in PostgreSQL . There is a ',' conflict between column table names and There is a '/' conflict between table names
- **Example**
+POSTGRESQL_TABLE_COLUMN_NAME is Name of column table in PostgreSQL . There is a ',' conflict between column table names and there is a '/' conflict between table names
+
+**Example**
 ```
 ## User table have created_at , updated_at , id , first_name, 
 last_name and User_log have created_at , updated_at , id , user_id , action , status
@@ -36,8 +38,9 @@ last_name and User_log have created_at , updated_at , id , user_id , action , st
 POSTGRESQL_TABLE_COLUMN_NAME = "created_at,updated_at,id,first_name,last_name/created_at,updated_at,id,user_id,action,status"
 ```
 - Set GCP Connections
- edit Connections name ' google_cloud_default'
+ edit Connections name 'google_cloud_default'
  <img width="1792" alt="Screen Shot 2564-05-31 at 22 04 48" src="https://user-images.githubusercontent.com/40566685/120215155-99073480-c25f-11eb-8df4-5d95daeab4a9.png">
+[Managing Airflow connections](https://cloud.google.com/composer/docs/how-to/managing/connections)
 
 ## Problem
 My Airflow cannot connect BigQuery even though my keys in 'Keyfile Path'  have access BigQuery Owner Role.
