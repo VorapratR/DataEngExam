@@ -1,7 +1,7 @@
 # DataEngExam
  DataEngExam is Data Engineering Exam 
  ## Description
- ![image](https://imgur.com/iFgg2OL) 
+![image](https://user-images.githubusercontent.com/40566685/120214906-4f1e4e80-c25f-11eb-9c7a-0199295f651c.png)
 It id the construction data pipeline as the picture 
  - Get data from PostgreSQL Hosting
  - Create DataLake by Google Cloud Storages  
