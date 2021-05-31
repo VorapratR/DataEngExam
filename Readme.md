@@ -2,6 +2,7 @@
  DataEngExam is Data Engineering Exam 
  ## Description
  ![ScreenShot](https://sv1.picz.in.th/images/2021/05/31/PHwJ4z.png) 
+ <img src="https://sv1.picz.in.th/images/2021/05/31/PHwJ4z.png" >
 It id the construction data pipeline as the picture 
  - Get data from PostgreSQL Hosting
  - Create DataLake by Google Cloud Storages  
