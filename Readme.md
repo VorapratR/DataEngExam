@@ -1,7 +1,7 @@
 # DataEngExam
  DataEngExam is Data Engineering Exam 
  ## Description
- ![enter image description here](https://sv1.picz.in.th/images/2021/05/31/PHwJ4z.png) 
+ ![ScreenShot](https://sv1.picz.in.th/images/2021/05/31/PHwJ4z.png) 
 It id the construction data pipeline as the picture 
  - Get data from PostgreSQL Hosting
  - Create DataLake by Google Cloud Storages  
@@ -19,7 +19,7 @@ docker-compose up -d
 ```
 ## Set Airflow
  ### Set Variable
-![enter image description here](https://sv1.picz.in.th/images/2021/05/31/PHKNBa.png)
+![ScreenShot](https://sv1.picz.in.th/images/2021/05/31/PHKNBa.png)
 POSTGRESQL_TABLE is Name of table in PostgreSQL , There is a ',' conflict between table names.
  - Example
  ```
@@ -36,7 +36,7 @@ POSTGRESQL_TABLE_COLUMN_NAME = "created_at,updated_at,id,first_name,last_name/cr
 ```
  ### Set GCP Connections
  edit Connections name ' google_cloud_default'
- ![enter image description here](https://sv1.picz.in.th/images/2021/05/31/PHZBLQ.png)
+ ![ScreenShot](https://sv1.picz.in.th/images/2021/05/31/PHZBLQ.png)
 
 ## Problem
 My Airflow cannot connect BigQuery even though my keys in 'Keyfile Path'  have access BigQuery Owner Role.
